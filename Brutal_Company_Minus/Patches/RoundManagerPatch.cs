@@ -37,7 +37,6 @@ namespace Brutal_Company_Minus.Patches
         private static IEnumerator DelayedExecution() // Delay this to fix trees not spawning in correctly on clients
         {
             yield return new WaitForSeconds(5.0f);
-            Log.LogFatal("Spawned");
             foreach (OutsideObjectsToSpawn obj in Server.Instance.outsideObjectsToSpawn)
             {
                 Manager.SpawnOutsideObjects(Lists.ObjectList[(Lists.ObjectName)obj.objectEnumID], obj.density, 100.0f, new Vector3(0.0f, -1.0f, 0.0f));
