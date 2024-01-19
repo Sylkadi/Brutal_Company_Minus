@@ -67,11 +67,11 @@ namespace Brutal_Company_Minus
             useCustomWeights = config.Bind("__Weight Settings", "Use custom weights?", false, "'false'= Use eventType weights to set all the weights     'true'= Use custom set weights");
             
             // eventType weights
-            veryGoodWeight = config.Bind("_EventType Weights", "VeryGood event weight", 5);
+            veryGoodWeight = config.Bind("_EventType Weights", "VeryGood event weight", 6);
             goodWeight = config.Bind("_EventType Weights", "Good event weight", 18);
-            neutralWeight = config.Bind("_EventType Weights", "Neutral event weight", 12);
-            badWeight = config.Bind("_EventType Weights", "Bad event weight", 35);
-            veryBadWeight = config.Bind("_EventType Weights", "VeryBad event weight", 15);
+            neutralWeight = config.Bind("_EventType Weights", "Neutral event weight", 15);
+            badWeight = config.Bind("_EventType Weights", "Bad event weight", 33);
+            veryBadWeight = config.Bind("_EventType Weights", "VeryBad event weight", 13);
             removeEnemyWeight = config.Bind("_EventType Weights", "RemoveEnemy event weight", 15, "These events remove something");
 
             // Weather settings
