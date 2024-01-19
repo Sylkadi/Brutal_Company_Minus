@@ -2,6 +2,7 @@
 ![Screenshot](Brutal_Company_Minus/README_IMAGES/Header.jpg)
 #### This mod is required on all clients
 #### Makes the game harder
+#### Current plan is to make more 'unique' events
 
 # Features
 <details>
