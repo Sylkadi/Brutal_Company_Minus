@@ -1,5 +1,5 @@
 # Brutal Company Minus
-![Screenshot](Brutal_Company_Minus/README_IMAGES/Header.jpg)
+![Screenshot](https://i.imgur.com/jS0vFm2.jpg)
 #### This mod is required on all clients
 #### Makes the game harder
 #### Current plan is to make more 'unique' events
@@ -9,19 +9,19 @@
   <summary><b>Event Mechanics</b></summary>
     
   - Whenever you land on a moon, a couple of events will be chosen, these events will appear in the UI in the top right hand corner of your screen, this can be open and closed by pressing 'k' or a custom set value in the config.
-![Screenshot](Brutal_Company_Minus/README_IMAGES/UIExample.jpg)
+![Screenshot](https://i.imgur.com/wjsVK7b.jpg)
 
   - Events will come in 6 main types and are categorized by color
   - These types all have there own weights to get that type of event, this can be changed in the config to use custom set weights instead of type weights.
 
-![Screenshot](Brutal_Company_Minus/README_IMAGES/EventTypeTable.jpg)
+![Screenshot](https://i.imgur.com/xlanuOi.jpg)
 </details>
 <details>
   <summary><b>Weather Multipliers</b></summary>
 
   - Weathers will now come with scrapValue, scrapAmount and factorySize multipliers.
   - These will also be displayed ingame on the terminal in this format <mark>(xScrapValue, xScrapAmount, xFactorySize)</mark> as such
-![Screenshot](Brutal_Company_Minus/README_IMAGES/WeatherMultipliersExample.jpg)
+![Screenshot](https://i.imgur.com/biZv8ck.jpg)
 
   - You can also enable randomize weather multipliers in the config, which will give abit of rng to the weathers after every day.
   - Default multiplier values goes as follows, these can be changed in the config.
