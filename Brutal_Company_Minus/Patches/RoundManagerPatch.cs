@@ -33,7 +33,7 @@ namespace Brutal_Company_Minus.Patches
                 Manager.SpawnOutsideObjects(obj._object, obj.count, 75.0f, new Vector3(0.0f, -0.05f, 0.0f));
             }
         }
-
+        
         private static IEnumerator DelayedExecution() // Delay this to fix trees not spawning in correctly on clients
         {
             yield return new WaitForSeconds(5.0f);
