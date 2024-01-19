@@ -40,7 +40,7 @@ namespace Brutal_Company_Minus
             new Events.BigBonus(),
             new Events.ScrapGalore(),
             new Events.GoldenBars(),
-            new Events.BigDeilvery(),
+            new Events.BigDelivery(),
             new Events.PlentyOutsideScrap(),
             // Good
             new Events.Bounty(),
@@ -64,7 +64,6 @@ namespace Brutal_Company_Minus
             new Events.LeaflessTrees(),
             // Bad
             new Events.HoardingBugs(),
-            new Events.BaboonHorde(),
             new Events.Bees(),
             new Events.Landmines(),
             new Events.Lizard(),

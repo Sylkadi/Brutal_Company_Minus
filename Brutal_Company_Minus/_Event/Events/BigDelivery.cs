@@ -8,9 +8,9 @@ using UnityEngine;
 
 namespace Brutal_Company_Minus._Event.Events
 {
-    internal class BigDeilvery : Event
+    internal class BigDelivery : Event
     {
-        public override string Name() => nameof(BigDeilvery);
+        public override string Name() => nameof(BigDelivery);
 
         public override List<string> EventsToRemove() => new List<string>() { nameof(SmallDeilvery) };
 
