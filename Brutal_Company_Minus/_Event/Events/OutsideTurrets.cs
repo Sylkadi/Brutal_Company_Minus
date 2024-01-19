@@ -15,6 +15,8 @@ namespace Brutal_Company_Minus._Event.Events
 
         public override List<string> EventsToSpawnWith() => new List<string>() { nameof(Trees) };
 
+        public override List<string> EventsToRemove() => new List<string>() { nameof(LeaflessBrownTrees), nameof(LeaflessTrees) };
+
         public override void Initalize()
         {
             Weight = 3;

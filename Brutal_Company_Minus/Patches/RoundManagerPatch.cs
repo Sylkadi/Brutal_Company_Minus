@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,16 +25,24 @@ namespace Brutal_Company_Minus.Patches
 
             // Client side objects
             Manager.randomSeedValue = StartOfRound.Instance.randomMapSeed + 2; // Reset seed value
-            foreach (OutsideObjectsToSpawn obj in Server.Instance.outsideObjectsToSpawn)
-            {
-                Manager.SpawnOutsideObjects(Lists.ObjectList[(Lists.ObjectName)obj.objectEnumID], obj.density, 100.0f, new Vector3(0.0f, -1.0f, 0.0f));
-            }
+            RoundManager.Instance.StartCoroutine(DelayedExecution());
 
             // Net objects
             foreach (cObj<GameObject> obj in Plugin.insideObjectsToSpawnOutside)
             {
                 Manager.SpawnOutsideObjects(obj._object, obj.count, 75.0f, new Vector3(0.0f, -0.05f, 0.0f));
             }
+        }
+
+        private static IEnumerator DelayedExecution() // Delay this to fix trees not spawning in correctly on clients
+        {
+            yield return new WaitForSeconds(5.0f);
+            Log.LogFatal("Spawned");
+            foreach (OutsideObjectsToSpawn obj in Server.Instance.outsideObjectsToSpawn)
+            {
+                Manager.SpawnOutsideObjects(Lists.ObjectList[(Lists.ObjectName)obj.objectEnumID], obj.density, 100.0f, new Vector3(0.0f, -1.0f, 0.0f));
+            }
+
         }
 
         [HarmonyPostfix]
