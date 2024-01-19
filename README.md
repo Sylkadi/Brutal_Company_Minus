@@ -21,7 +21,7 @@
   - These will also be displayed ingame on the terminal in this format <mark>(xScrapValue, xScrapAmount, xFactorySize)</mark> as such
 ![Screenshot](Brutal_Company_Minus/README_IMAGES/WeatherMultipliersExample.jpg)
 
-  - You can also enable randomize weather multipliers, which will give abit of rng to the weathers after every day.
+  - You can also enable randomize weather multipliers in the config, which will give abit of rng to the weathers after every day.
   - Default multiplier values goes as follows, these can be changed in the config.
 
 **WARNING: Setting a factory size value below 1.00 may crash your game**
