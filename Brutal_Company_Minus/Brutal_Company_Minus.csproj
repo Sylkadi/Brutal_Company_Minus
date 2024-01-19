@@ -69,10 +69,6 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="README_IMAGES\" />
-  </ItemGroup>
-
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="cd C:\NetcodePatcher&#xD;&#xA;NetcodePatcher.dll &quot;C:\Users\klagu\source\repos\Brutal_Company_Minus\Brutal_Company_Minus\bin\Release\netstandard2.1&quot; deps/&#xD;&#xA;xcopy &quot;$(SolutionDir)Brutal_Company_Minus\bin\Release\netstandard2.1\$(ProjectName).dll&quot; &quot;C:\Users\klagu\AppData\Roaming\Thunderstore Mod Manager\DataFolder\LethalCompany\profiles\Mod Testing\BepInEx\plugins&quot; /Y /I&#xD;&#xA;xcopy &quot;$(SolutionDir)Brutal_Company_Minus\bin\Release\netstandard2.1\$(ProjectName).dll&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\BepInEx\plugins&quot; /Y /I&#xD;&#xA;xcopy &quot;C:\Users\klagu\source\repos\Brutal_Company_Minus\Brutal_Company_Minus\asset&quot; &quot;C:\Users\klagu\AppData\Roaming\Thunderstore Mod Manager\DataFolder\LethalCompany\profiles\Mod Testing\BepInEx\plugins&quot; /Y /I&#xD;&#xA;xcopy &quot;C:\Users\klagu\source\repos\Brutal_Company_Minus\Brutal_Company_Minus\asset&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\Lethal Company\BepInEx\plugins&quot; /Y /I&#xD;&#xA;" />
   </Target>
