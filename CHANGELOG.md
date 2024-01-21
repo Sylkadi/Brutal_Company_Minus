@@ -1,5 +1,10 @@
 # ChangeLog
 <details>
+<summary>0.6.2</summary>
+  
+  - Fixed mod breaking with certain moon mods.
+</details>
+<details>
   <summary>0.6.0</summary>
   
   - Made a proper README.md and a seperate CHANGELOG.md file
