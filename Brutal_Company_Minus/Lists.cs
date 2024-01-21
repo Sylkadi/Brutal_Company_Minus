@@ -39,6 +39,7 @@ namespace Brutal_Company_Minus
                 {
                     // Generate enemyList
                     List<EnemyType> AllEnemies = Resources.FindObjectsOfTypeAll<EnemyType>().Concat(GameObject.FindObjectsByType<EnemyType>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID)).ToList();
+                    AllEnemies = AllEnemies.GroupBy(x => x.name).Select(x => x.FirstOrDefault()).OrderBy(x => x.name).ToList(); // Remove duplicates if exists
 
                     foreach (EnemyType enemy in AllEnemies)
                     {
@@ -109,6 +110,7 @@ namespace Brutal_Company_Minus
 
                     // Generate itemList
                     List<Item> AllItems = Resources.FindObjectsOfTypeAll<Item>().Concat(GameObject.FindObjectsByType<Item>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID)).ToList();
+                    AllItems = AllItems.GroupBy(x => x.name).Select(x => x.FirstOrDefault()).OrderBy(x => x.name).ToList(); // Remove duplicates if exists
 
                     foreach (Item item in AllItems)
                     {
