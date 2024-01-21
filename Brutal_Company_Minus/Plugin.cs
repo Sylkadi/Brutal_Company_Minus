@@ -26,7 +26,7 @@ namespace Brutal_Company_Minus
     {
         private const string GUID = "Drinkable.Brutal_Company_Minus";
         private const string NAME = "Brutal_Company_Minus";
-        private const string VERSION = "0.6.1";
+        private const string VERSION = "0.6.3";
         
         public static Plugin Instance;
         private readonly Harmony harmony = new Harmony(GUID);
@@ -34,6 +34,8 @@ namespace Brutal_Company_Minus
         public static List<cObj<EnemyType>> enemiesToSpawnInside = new List<cObj<EnemyType>>();
         public static List<cObj<EnemyType>> enemiesToSpawnOutside = new List<cObj<EnemyType>>();
         public static List<cObj<GameObject>> insideObjectsToSpawnOutside = new List<cObj<GameObject>>();
+
+        public static int randomItemsToSpawnOutsideCount = 0;
 
         public static List<Event> events = new List<Event>() {
             // Very Good
@@ -154,6 +156,9 @@ namespace Brutal_Company_Minus
             // Log
             Log.Initalize(Logger);
 
+            // Generate Lists
+            Lists.GenerateLists();
+
             // Load asset bundle
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Brutal_Company_Minus.asset")) bundle = AssetBundle.LoadFromStream(stream);
 
@@ -173,9 +178,6 @@ namespace Brutal_Company_Minus
                 events[i].Type = Configuration.eventTypes[i].Value;
                 events[i].ScaleList = Configuration.eventScales[i];
             }
-
-            // Generate lists
-            Lists.GenerateLists();
 
             // Harmony patch all
             harmony.PatchAll();
@@ -216,16 +218,22 @@ namespace Brutal_Company_Minus
             Manager.ApplyEvents(currentEvents);
             Manager.ApplyEvents(additionalEvents);
 
+            // Spawn outside scrap
+            Manager.DoSpawnScrapOutside(1.0f, randomItemsToSpawnOutsideCount);
+
             // Sync values to all clients
             Server.Instance.SetMultipliersClientRpc(factorySizeMultiplier, scrapValueMultiplier, scrapAmountMultiplier);
 
             // Apply UI
             UI.GenerateText(currentEvents);
 
-            Log.LogInfo("MapMultipliers = [scrapValueMultiplier: " + scrapValueMultiplier + ",     scrapAmountMultiplier: " + scrapAmountMultiplier + ",     factorySizeMultiplier:" + factorySizeMultiplier + "]");
-            Log.LogInfo("IsAntiCoildHead = " + Server.Instance.isAntiCoilHead);
-        }
+            // Logging
+            foreach (Event e in currentEvents) Log.LogInfo("Event chosen: " + e.Name());
 
+            Log.LogInfo("MapMultipliers = [scrapValueMultiplier: " + scrapValueMultiplier + ",     scrapAmountMultiplier: " + scrapAmountMultiplier + ",     factorySizeMultiplier:" + factorySizeMultiplier + "]");
+            Log.LogInfo("IsAntiCoildHead = " + Server.Instance.isAntiCoilHead.Value);
+        }
+        
         static void ResetValues(SelectableLevel newLevel)
         {
             foreach (SpawnableMapObject obj in newLevel.spawnableMapObjects)
@@ -257,6 +265,7 @@ namespace Brutal_Company_Minus
             scrapValueMultiplier = 0.4f; // Default value is 0.4 not 1.0
             scrapMinAmount = MinScrap;
             scrapMaxAmount = MaxScrap;
+            randomItemsToSpawnOutsideCount = 0;
 
             // Reset objectSpawnLists
             insideObjectsToSpawnOutside.Clear();

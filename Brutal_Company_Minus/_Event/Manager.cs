@@ -23,32 +23,6 @@ namespace Brutal_Company_Minus._Event
 
             List<Vector3> spawnDenialPoints = Functions.GetSpawnDenialNodes();
 
-            switch (RoundManager.Instance.currentLevel.name) // Custom denial points so spawned objects dont block something
-            {
-                case "ExperimentationLevel":
-                    spawnDenialPoints.Add(new Vector3(-72, 0, -100));
-                    spawnDenialPoints.Add(new Vector3(-72, 0, -45));
-                    spawnDenialPoints.Add(new Vector3(-72, 0, 15));
-                    spawnDenialPoints.Add(new Vector3(-72, 0, 75));
-                    spawnDenialPoints.Add(new Vector3(-30, 2, -30));
-                    spawnDenialPoints.Add(new Vector3(-20, -2, 75));
-                    break;
-                case "AssuranceLevel":
-                    spawnDenialPoints.Add(new Vector3(63, -2, -43));
-                    spawnDenialPoints.Add(new Vector3(120, -1, 75));
-                    break;
-                case "OffenseLevel":
-                    spawnDenialPoints.Add(new Vector3(120, 10, -65));
-                    break;
-                case "DineLevel":
-                    spawnDenialPoints.Add(new Vector3(-40, 0, 80));
-                    break;
-                case "TitanLevel":
-                    spawnDenialPoints.Add(new Vector3(-16, -3, 5));
-                    spawnDenialPoints.Add(new Vector3(-50, 20, -30));
-                    break;
-            }
-
             int count = (int)(density * Plugin.TerrainArea); // Compute amount
             for (int i = 0; i < count; i++)
             {
@@ -157,7 +131,12 @@ namespace Brutal_Company_Minus._Event
             }
         }
 
-        public static void SpawnScrapOutside(float Multiplier, int Amount = -1)
+        public static void SpawnScrapOutside(int Amount)
+        {
+            Plugin.randomItemsToSpawnOutsideCount = Amount;
+        }
+
+        public static void DoSpawnScrapOutside(float Multiplier, int Amount = -1)
         {
             RoundManager r = RoundManager.Instance;
             System.Random rng = new System.Random();
@@ -213,14 +192,25 @@ namespace Brutal_Company_Minus._Event
 
         public static SpawnableItemWithRarity generateItemWithRarity(Item item, int rarity)
         {
+            
             SpawnableItemWithRarity spawnableItemWithRarity = new SpawnableItemWithRarity();
             spawnableItemWithRarity.spawnableItem = item;
             spawnableItemWithRarity.rarity = rarity;
+            if(item.spawnPrefab == null)
+            {
+                Log.LogError("Item prefab on generateItemWithRarity() is null, setting rarity to 0");
+                spawnableItemWithRarity.rarity = 0;
+            }
             return spawnableItemWithRarity;
         }
 
         public static void AddEnemyToPoolWithRarity(ref List<SpawnableEnemyWithRarity> list, EnemyType enemy, int rarity)
         {
+            if(enemy.enemyPrefab == null)
+            {
+                Log.LogError("Enemy prefab is null on AddEnemyToPoolWithRarity(), returning.");
+                return;
+            }
             SpawnableEnemyWithRarity spawnableEnemyWithRarity = new SpawnableEnemyWithRarity();
             spawnableEnemyWithRarity.enemyType = enemy;
             spawnableEnemyWithRarity.rarity = rarity;
@@ -271,6 +261,11 @@ namespace Brutal_Company_Minus._Event
             {
                 for(int j = 0; j < Plugin.enemiesToSpawnOutside[i].count; j++)
                 {
+                    if (Plugin.enemiesToSpawnOutside[i]._object.enemyPrefab == null)
+                    {
+                        Log.LogError("Enemy prefab on DoSpawnOutsideEnemies() is null, continuing.");
+                        continue;
+                    }
                     GameObject obj = UnityEngine.Object.Instantiate(
                         Plugin.enemiesToSpawnOutside[i]._object.enemyPrefab,
                         Functions.GetSafePosition(OutsideAiNodes, SpawnDenialNodes, 20.0f),
@@ -286,12 +281,16 @@ namespace Brutal_Company_Minus._Event
 
         public static void DoSpawnInsideEnemies()
         {
-
             // Spawn Inside enemies
             for (int i = 0; i < Plugin.enemiesToSpawnInside.Count; i++)
             {
                 for (int j = 0; j < Plugin.enemiesToSpawnInside[i].count; j++)
                 {
+                    if (Plugin.enemiesToSpawnInside[i]._object.enemyPrefab == null)
+                    {
+                        Log.LogError("Enemy prefab on DoSpawnInsideEnemies() is null, continuing.");
+                        continue;
+                    }
                     int index = UnityEngine.Random.Range(0, RoundManager.Instance.allEnemyVents.Length);
                     Vector3 position = RoundManager.Instance.allEnemyVents[index].floorNode.position;
                     position = RoundManager.Instance.GetRandomNavMeshPositionInRadius(position, Plugin.enemiesToSpawnInside[i].radius, RoundManager.Instance.navHit);

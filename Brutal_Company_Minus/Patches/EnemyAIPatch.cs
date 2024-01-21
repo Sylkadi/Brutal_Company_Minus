@@ -19,24 +19,29 @@ namespace Brutal_Company_Minus.Patches
         public static void OnMeetsStandardPlayerCollisionConditions(ref PlayerControllerB __result, ref Collider other, ref EnemyType ___enemyType, ref bool ___isEnemyDead, ref bool inKillAnimation, ref float ___stunNormalizedTimer) // This fix works, maybe theres a better way
         {
             PlayerControllerB controller = other.gameObject.GetComponent<PlayerControllerB>();
-            if (!___isEnemyDead && ___stunNormalizedTimer < 0.0f && !inKillAnimation && controller != null && __result == null) // (This may have some unintended consequences)
+            if (controller != null)
             {
-                if(controller.actualClientId == GameNetworkManager.Instance.localPlayerController.actualClientId) __result = controller;
-                if (___enemyType.name == "SpringMan")
+                if (!___isEnemyDead && ___stunNormalizedTimer < 0.0f && !inKillAnimation && __result == null) // (This may have some unintended consequences)
                 {
-                    if (__result.IsServer && !__result.IsOwner)
+                    if (controller.actualClientId == GameNetworkManager.Instance.localPlayerController.actualClientId) __result = controller;
+                    /*
+                    if (___enemyType.name == "SpringMan")
                     {
-                        __result = controller;
-                        // Damage player
-                        Server.Instance.ForcePlayerDamageServerRpc(__result.actualClientId, 90, true, true, CauseOfDeath.Mauling, 2);
-
-                        // Apply fear
-                        if (!(1 - __result.playersManager.fearLevel < 0.05f))
+                        if (__result.IsServer && !__result.IsOwner)
                         {
-                            __result.playersManager.fearLevel = 1;
-                            __result.playersManager.fearLevelIncreasing = true;
+                            __result = controller;
+                            // Damage player
+                            Server.Instance.ForcePlayerDamageServerRpc(__result.actualClientId, 90, true, true, CauseOfDeath.Mauling, 2);
+
+                            // Apply fear
+                            if (!(1 - __result.playersManager.fearLevel < 0.05f))
+                            {
+                                __result.playersManager.fearLevel = 1;
+                                __result.playersManager.fearLevelIncreasing = true;
+                            }
                         }
                     }
+                    */
                 }
             }
         }
@@ -55,6 +60,8 @@ namespace Brutal_Company_Minus.Patches
         {
             try
             {
+                Log.LogFatal(__instance.name);
+
                 GameObject terrainMap = GameObject.FindGameObjectWithTag(Plugin.TerrainTag);
                 GameObject[] objects = GameObject.FindGameObjectsWithTag(Plugin.TerrainTag);
                 foreach(GameObject obj in objects)
@@ -73,12 +80,13 @@ namespace Brutal_Company_Minus.Patches
                     {
                         __instance.EnableEnemyMesh(!StartOfRound.Instance.hangarDoorsClosed || !GameNetworkManager.Instance.localPlayerController.isInHangarShipRoom);
                     }
-
+                    __instance.SyncPositionToClients();
                 }
                 else
                 {
                     __instance.isOutside = false;
                     __instance.allAINodes = GameObject.FindGameObjectsWithTag("AINode");
+                    __instance.SyncPositionToClients();
                 }
             } catch
             {

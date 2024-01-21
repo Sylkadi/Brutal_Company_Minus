@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace Brutal_Company_Minus
 {
     internal class Lists
     {
-
         public enum EnemyName
         {
             Bracken, HoardingBug, CoilHead, Thumper, BunkerSpider, Jester, SnareFlea, Hygrodere, GhostGirl, SporeLizard, NutCracker, Masked, EyelessDog, ForestKeeper, EarthLeviathan, BaboonHawk, RoamingLocust, Manticoil, CircuitBee, Lasso
@@ -33,16 +33,18 @@ namespace Brutal_Company_Minus
         private static bool generatedList = false;
         public static void GenerateLists()
         {
-            SceneManager.sceneLoaded += (scene, mode) =>
+            SceneManager.sceneLoaded += (s, e) =>
             {
                 if (!generatedList && StartOfRound.Instance != null)
                 {
                     // Generate enemyList
+
                     List<EnemyType> AllEnemies = Resources.FindObjectsOfTypeAll<EnemyType>().Concat(GameObject.FindObjectsByType<EnemyType>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID)).ToList();
                     AllEnemies = AllEnemies.GroupBy(x => x.name).Select(x => x.FirstOrDefault()).OrderBy(x => x.name).ToList(); // Remove duplicates if exists
 
                     foreach (EnemyType enemy in AllEnemies)
                     {
+                        if (enemy.enemyPrefab == null) Log.LogWarning(string.Format("EnemyType:{0}, prefab is null. this may cause issues...", enemy.name));
                         switch (enemy.name)
                         {
                             case "Centipede":
@@ -108,12 +110,13 @@ namespace Brutal_Company_Minus
                         }
                     }
 
-                    // Generate itemList
+
                     List<Item> AllItems = Resources.FindObjectsOfTypeAll<Item>().Concat(GameObject.FindObjectsByType<Item>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID)).ToList();
                     AllItems = AllItems.GroupBy(x => x.name).Select(x => x.FirstOrDefault()).OrderBy(x => x.name).ToList(); // Remove duplicates if exists
 
                     foreach (Item item in AllItems)
                     {
+                        if (item.spawnPrefab == null) Log.LogWarning(string.Format("Item:{0}, prefab is null. this may cause issues...", item.name));
                         switch (item.name)
                         {
                             case "Cog1":
@@ -259,7 +262,7 @@ namespace Brutal_Company_Minus
                                 break;
                         }
                     }
-
+                    
                     // Generate objectList
                     List<SpawnableMapObject> insideObjectList = new List<SpawnableMapObject>();
                     List<SpawnableOutsideObjectWithRarity> outsideObjectList = new List<SpawnableOutsideObjectWithRarity>();
