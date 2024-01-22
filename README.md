@@ -1,9 +1,9 @@
 # Brutal Company Minus
 ![Screenshot](https://i.imgur.com/jS0vFm2.jpg)
-### If you are using Atlas_Abyss v1.1.3 by Zingar, please downgrade to v1.1.2 or older or else this mod wont work, for whatever reason it now removes a bunch of prefabs, I have yet to implement a proper fix.
 #### This mod is required on all clients
 #### Makes the game harder
 #### Current plan is to make more 'unique' events
+#### This mod might not work properly with certain moon mods, yet to fix fully.
 
 # Features
 <details>
