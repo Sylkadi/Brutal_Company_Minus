@@ -1,5 +1,11 @@
 # ChangeLog
 <details>
+<summary>0.6.3</summary>
+
+  - Atlas_Abyss v1.1.3 by Zingar fucks with this mod for whatever reason by removing a bunch of prefabs? i have yet to get to the bottom of this
+  - Added some null checks
+</details>
+<details>
 <summary>0.6.2</summary>
   
   - Fixed mod breaking with certain moon mods.
