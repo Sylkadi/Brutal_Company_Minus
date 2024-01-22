@@ -57,6 +57,9 @@ namespace Brutal_Company_Minus.EventUI
                                 letter.text = key;
                             }
                             break;
+                        case "LetterPanel":
+                            if(!Configuration.ShowUILetterBox.Value || !Configuration.EnableUI.Value) comp.gameObject.SetActive(false);
+                            break;
                         case "Scrollbar":
                             if (panelScrollBar == null) panelScrollBar = comp.GetComponent<Scrollbar>();
                             break;
@@ -88,14 +91,17 @@ namespace Brutal_Company_Minus.EventUI
             string text = "<br>Events:<br>";
             foreach (Event e in events) text += string.Format("-<color={0}>{1}</color><br>", e.ColorHex, e.Description);
 
-
-            float ScrapValueMultiplier = RoundManager.Instance.scrapValueMultiplier;
-            if (Configuration.NormaliseScrapValueDisplay.Value) ScrapValueMultiplier *= 2.5f;
-            text += string.Format("<br>Map:<br> Scrap:<br>  -Value: x{0}<br>  -Amount: x{1}<br><br> Factory:<br>  -Size: x{2}",
-                ScrapValueMultiplier.ToString("F2"), RoundManager.Instance.scrapAmountMultiplier.ToString("F2"), RoundManager.Instance.currentLevel.factorySizeMultiplier.ToString("F2"));
+            // Extra properties
+            if(Configuration.ShowExtraProperties.Value)
+            {
+                float ScrapValueMultiplier = RoundManager.Instance.scrapValueMultiplier;
+                if (Configuration.NormaliseScrapValueDisplay.Value) ScrapValueMultiplier *= 2.5f;
+                text += string.Format("<br>Map:<br> Scrap:<br>  -Value: x{0}<br>  -Amount: x{1}<br><br> Factory:<br>  -Size: x{2}",
+                    ScrapValueMultiplier.ToString("F2"), RoundManager.Instance.scrapAmountMultiplier.ToString("F2"), RoundManager.Instance.currentLevel.factorySizeMultiplier.ToString("F2"));
+            }
 
             Server.Instance.textUI.Value = new FixedString4096Bytes(text);
-            Server.Instance.ShowCaseEventsClientRpc();
+            if(Configuration.PopUpUI.Value && Configuration.EnableUI.Value) Server.Instance.ShowCaseEventsClientRpc();
         }
 
         public static void ClearText()

@@ -131,6 +131,26 @@ namespace Brutal_Company_Minus._Event
             }
         }
 
+        public static Item GetScrapSafe(Item item)
+        {
+            if (Lists.ItemList.Any(x => x.Value.name == item.name))
+            {
+                foreach(KeyValuePair<Lists.ItemName, Item> i in Lists.ItemList)
+                {
+                    if (i.Value.name == item.name) return i.Value;
+                }
+            }
+            if(Lists.CustomItemList.Any(x => x.Value.name == item.name))
+            {
+                foreach(KeyValuePair<string, Item> i in Lists.CustomItemList)
+                {
+                    if (i.Value.name == item.name) return i.Value;
+                }
+            }
+            Log.LogError(string.Format("Item:'{0}' dosen't exist in the lists, returning metalSheet"));
+            return Lists.ItemList[Lists.ItemName.MetalSheet];
+        }
+
         public static void SpawnScrapOutside(int Amount)
         {
             Plugin.randomItemsToSpawnOutsideCount = Amount;
@@ -158,7 +178,11 @@ namespace Brutal_Company_Minus._Event
                 }
             }
             int[] weights = ScrapWeights.ToArray();
-            for(int i = 0; i < ScrapAmount; i++) ScrapToSpawn.Add(r.currentLevel.spawnableScrap[r.GetRandomWeightedIndex(weights, rng)].spawnableItem);
+            for (int i = 0; i < ScrapAmount; i++)
+            {
+                Item pickedScrap = r.currentLevel.spawnableScrap[r.GetRandomWeightedIndex(weights, rng)].spawnableItem;
+                ScrapToSpawn.Add(GetScrapSafe(pickedScrap)); // Get scrap safely
+            }
             // Spawn Scrap
             List<NetworkObjectReference> ScrapSpawnsNet = new List<NetworkObjectReference>();
             List<Vector3> OutsideNodes = Functions.GetOutsideNodes();
@@ -170,7 +194,6 @@ namespace Brutal_Company_Minus._Event
                     continue;
                 }
                 Vector3 position = r.GetRandomNavMeshPositionInBoxPredictable(OutsideNodes[UnityEngine.Random.Range(0, OutsideNodes.Count)], 10.0f, r.navHit, rng);
-
                 GameObject obj = UnityEngine.Object.Instantiate(ScrapToSpawn[i].spawnPrefab, position, Quaternion.identity, r.spawnedScrapContainer);
                 GrabbableObject grabbableObject = obj.GetComponent<GrabbableObject>();
                 grabbableObject.transform.rotation = Quaternion.Euler(grabbableObject.itemProperties.restingRotation);

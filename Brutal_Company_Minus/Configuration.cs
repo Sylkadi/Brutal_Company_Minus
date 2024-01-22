@@ -30,7 +30,7 @@ namespace Brutal_Company_Minus
         public static Weather noneMultiplier, dustCloudMultiplier, rainyMultiplier, stormyMultiplier, foggyMultiplier, floodedMultiplier, eclipsedMultiplier;
 
         public static ConfigEntry<string> UIKey;
-        public static ConfigEntry<bool> NormaliseScrapValueDisplay;
+        public static ConfigEntry<bool> NormaliseScrapValueDisplay, EnableUI, ShowUILetterBox, ShowExtraProperties, PopUpUI;
 
         public static void Initalize()
         {
@@ -105,6 +105,10 @@ namespace Brutal_Company_Minus
             // UI Key
             UIKey = config.Bind("_UI Options", "Toggle UI Key", "K");
             NormaliseScrapValueDisplay = config.Bind("_UI Options", "Normlize scrap value display number?", true, "In game default value is 0.4, having this set to true will multiply the 'displayed value' by 2.5 so it looks normal.");
+            EnableUI = config.Bind("_UI Options", "Enable UI?", true);
+            ShowUILetterBox = config.Bind("_UI Options", "Display UI Letter Box?", true);
+            ShowExtraProperties = config.Bind("_UI Options", "Display extra properties", true, "Display extra properties on UI such as scrap value and amount multipliers.");
+            PopUpUI = config.Bind("_UI Options", "PopUp UI?", true, "Will the UI popup whenever you start the day?");
 
         }
     }

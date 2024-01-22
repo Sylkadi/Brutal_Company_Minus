@@ -60,8 +60,6 @@ namespace Brutal_Company_Minus.Patches
         {
             try
             {
-                Log.LogFatal(__instance.name);
-
                 GameObject terrainMap = GameObject.FindGameObjectWithTag(Plugin.TerrainTag);
                 GameObject[] objects = GameObject.FindGameObjectsWithTag(Plugin.TerrainTag);
                 foreach(GameObject obj in objects)

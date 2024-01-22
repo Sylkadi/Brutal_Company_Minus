@@ -38,6 +38,7 @@ namespace Brutal_Company_Minus._Event.Events
             }
 
             SpawnableItemWithRarity chosenScrap = RoundManager.Instance.currentLevel.spawnableScrap[UnityEngine.Random.Range(0, RoundManager.Instance.currentLevel.spawnableScrap.Count)];
+            chosenScrap.spawnableItem = Manager.GetScrapSafe(chosenScrap.spawnableItem);
 
             RoundManager.Instance.currentLevel.spawnableScrap.RemoveAll(x => x.spawnableItem.name != chosenScrap.spawnableItem.name);
 

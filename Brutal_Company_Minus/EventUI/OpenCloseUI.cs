@@ -20,7 +20,7 @@ namespace Brutal_Company_Minus.EventUI
         {
             Instance = this;
             keyboard = Keyboard.current;
-            if (keyboard != null) keyboard.onTextInput += OnKeyboardInput;
+            if (keyboard != null && Configuration.EnableUI.Value) keyboard.onTextInput += OnKeyboardInput;
         }
 
         public void OnKeyboardInput(char input)
@@ -41,7 +41,7 @@ namespace Brutal_Company_Minus.EventUI
 
         public void UnsubscribeFromKeyboardEvent()
         {
-            keyboard.onTextInput -= OnKeyboardInput;
+            if(Configuration.EnableUI.Value) keyboard.onTextInput -= OnKeyboardInput;
         }
     }
 }

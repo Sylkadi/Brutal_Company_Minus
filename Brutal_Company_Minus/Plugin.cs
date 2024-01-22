@@ -26,7 +26,7 @@ namespace Brutal_Company_Minus
     {
         private const string GUID = "Drinkable.Brutal_Company_Minus";
         private const string NAME = "Brutal_Company_Minus";
-        private const string VERSION = "0.6.3";
+        private const string VERSION = "0.6.4";
         
         public static Plugin Instance;
         private readonly Harmony harmony = new Harmony(GUID);
@@ -218,6 +218,9 @@ namespace Brutal_Company_Minus
             Manager.ApplyEvents(currentEvents);
             Manager.ApplyEvents(additionalEvents);
 
+            // Log Chosen events
+            foreach (Event e in currentEvents) Log.LogInfo("Event chosen: " + e.Name());
+
             // Spawn outside scrap
             Manager.DoSpawnScrapOutside(1.0f, randomItemsToSpawnOutsideCount);
 
@@ -228,7 +231,6 @@ namespace Brutal_Company_Minus
             UI.GenerateText(currentEvents);
 
             // Logging
-            foreach (Event e in currentEvents) Log.LogInfo("Event chosen: " + e.Name());
 
             Log.LogInfo("MapMultipliers = [scrapValueMultiplier: " + scrapValueMultiplier + ",     scrapAmountMultiplier: " + scrapAmountMultiplier + ",     factorySizeMultiplier:" + factorySizeMultiplier + "]");
             Log.LogInfo("IsAntiCoildHead = " + Server.Instance.isAntiCoilHead.Value);

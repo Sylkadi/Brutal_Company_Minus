@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
+using System.Runtime.CompilerServices;
+using UnityEngine.SearchService;
 
 namespace Brutal_Company_Minus
 {
@@ -16,12 +18,14 @@ namespace Brutal_Company_Minus
             Bracken, HoardingBug, CoilHead, Thumper, BunkerSpider, Jester, SnareFlea, Hygrodere, GhostGirl, SporeLizard, NutCracker, Masked, EyelessDog, ForestKeeper, EarthLeviathan, BaboonHawk, RoamingLocust, Manticoil, CircuitBee, Lasso
         }
         public static Dictionary<EnemyName, EnemyType> EnemyList = new Dictionary<EnemyName, EnemyType>();
+        public static Dictionary<string, EnemyType> CustomEnemyList = new Dictionary<string, EnemyType>();
 
         public enum ItemName
         {
             LargeAxle, V_TypeEngine, PlasticFish, MetalSheet, LaserPointer, BigBolt, Bottles, Ring, SteeringWheel, CookieMoldPan, EggBeater, JarOfPickles, DustPan, AirHorn, ClownHorn, CashRegister, Candy, GoldBar, YieldSign, HomemadeFlashbang, Gift, Flask, ToyCube, Remote, ToyRobot, MagnifyingGlass, StopSign, TeaKettle, Mug, RedSoda, OldPhone, HairDryer, Brush, Bell, WhoopieCushion, Comedy, Tragedy, RubberDucky, ChemicalJug, FancyLamp, GoldenCup, Painting, Toothpaste, PillBottle, PerfumeBottle, Teeth, Magic7Ball
         }
         public static Dictionary<ItemName, Item> ItemList = new Dictionary<ItemName, Item>();
+        public static Dictionary<string, Item> CustomItemList = new Dictionary<string, Item>();
         public enum ObjectName
         {
             LargeRock1, LargeRock2, LargeRock3, LargeRock4, TreeLeaflessBrown1, GiantPumkin, GreyRockGrouping2, GreyRockGrouping4, Tree, TreeLeafless2, TreeLeafless3, Landmine, Turret
@@ -40,9 +44,13 @@ namespace Brutal_Company_Minus
                     // Generate enemyList
 
                     List<EnemyType> AllEnemies = Resources.FindObjectsOfTypeAll<EnemyType>().Concat(GameObject.FindObjectsByType<EnemyType>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID)).ToList();
-                    AllEnemies = AllEnemies.GroupBy(x => x.name).Select(x => x.FirstOrDefault()).OrderBy(x => x.name).ToList(); // Remove duplicates if exists
+                    List<EnemyType> FilteredAllEnemies = new List<EnemyType>();
+                    foreach (EnemyType enemy in AllEnemies) {
+                        if (enemy.enemyPrefab != null) FilteredAllEnemies.Add(enemy);
+                    }
+                    FilteredAllEnemies = FilteredAllEnemies.GroupBy(x => x.name).Select(x => x.FirstOrDefault()).OrderBy(x => x.name).ToList(); // Remove duplicates if exists
 
-                    foreach (EnemyType enemy in AllEnemies)
+                    foreach (EnemyType enemy in FilteredAllEnemies)
                     {
                         if (enemy.enemyPrefab == null) Log.LogWarning(string.Format("EnemyType:{0}, prefab is null. this may cause issues...", enemy.name));
                         switch (enemy.name)
@@ -107,14 +115,27 @@ namespace Brutal_Company_Minus
                             case "MaskedPlayerEnemy":
                                 EnemyList.Add(EnemyName.Masked, enemy);
                                 break;
+                            default: // For modded enemies
+                                CustomEnemyList.Add(enemy.name, enemy);
+                                break;
                         }
                     }
 
 
                     List<Item> AllItems = Resources.FindObjectsOfTypeAll<Item>().Concat(GameObject.FindObjectsByType<Item>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID)).ToList();
-                    AllItems = AllItems.GroupBy(x => x.name).Select(x => x.FirstOrDefault()).OrderBy(x => x.name).ToList(); // Remove duplicates if exists
+                    List<Item> FilteredAllItems = new List<Item>();
+                    foreach(Item item in AllItems)
+                    {
+                        if (item.spawnPrefab != null && item.spawnPrefab.GetComponent<GrabbableObject>() != null) // Check if grabbableObject exists
+                        {
+                            Item k = item;
+                            k.spawnPrefab.GetComponent<GrabbableObject>().itemProperties = k; // This property is sometimes missing with certain mods...
+                            FilteredAllItems.Add(k);
+                        }
+                    }
+                    FilteredAllItems = FilteredAllItems.GroupBy(x => x.name).Select(x => x.FirstOrDefault()).OrderBy(x => x.name).ToList(); // Remove duplicates if exists
 
-                    foreach (Item item in AllItems)
+                    foreach (Item item in FilteredAllItems)
                     {
                         if (item.spawnPrefab == null) Log.LogWarning(string.Format("Item:{0}, prefab is null. this may cause issues...", item.name));
                         switch (item.name)
@@ -260,9 +281,12 @@ namespace Brutal_Company_Minus
                             case "7Ball":
                                 ItemList.Add(ItemName.Magic7Ball, item);
                                 break;
+                            default:
+                                CustomItemList.Add(item.name, item); // For modded items
+                                break;
                         }
                     }
-                    
+
                     // Generate objectList
                     List<SpawnableMapObject> insideObjectList = new List<SpawnableMapObject>();
                     List<SpawnableOutsideObjectWithRarity> outsideObjectList = new List<SpawnableOutsideObjectWithRarity>();
