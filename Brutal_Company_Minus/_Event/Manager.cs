@@ -397,6 +397,17 @@ namespace Brutal_Company_Minus._Event
                 }
             }
 
+            // Remove disabledEvents from EventsToSpawnWith List
+            List<Event> newEventsToSpawnWithList = new List<Event>();
+            foreach(Event e in Plugin.disabledEvents)
+            {
+                foreach(Event E in eventsToSpawnWith)
+                {
+                    if (E.Name() != e.Name()) newEventsToSpawnWithList.Add(E);
+                }
+            }
+            eventsToSpawnWith = newEventsToSpawnWithList;
+
             additionalEvents = new List<Event>();
             additionalEvents.AddRange(eventsToSpawnWith);
             return chosenEvents;

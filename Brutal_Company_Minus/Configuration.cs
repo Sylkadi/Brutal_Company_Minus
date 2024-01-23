@@ -22,6 +22,7 @@ namespace Brutal_Company_Minus
             eventColorHexes = new List<ConfigEntry<string>>();
         public static List<ConfigEntry<Event.type>> eventTypes = new List<ConfigEntry<Event.type>>();
         public static List<Dictionary<ScaleType, Scale>> eventScales = new List<Dictionary<ScaleType, Scale>>();
+        public static List<ConfigEntry<bool>> eventEnables = new List<ConfigEntry<bool>>();
 
         public static ConfigEntry<bool> useCustomWeights, useWeatherMultipliers, randomizeWeatherMultipliers;
         public static ConfigEntry<int> veryGoodWeight, goodWeight, neutralWeight, badWeight, veryBadWeight, removeEnemyWeight;
@@ -40,10 +41,11 @@ namespace Brutal_Company_Minus
             // Set event weights
             foreach (Event e in Plugin.events)
             {
-                eventWeights.Add(config.Bind(e.Name(), "Weight", e.Weight));
+                eventWeights.Add(config.Bind(e.Name(), "Custom Weight", e.Weight, "If you want to use custom weights change 'Use custom weights'? setting in '__Weight Settings' to true."));
                 eventDescriptions.Add(config.Bind(e.Name(), "Description", e.Description));
                 eventColorHexes.Add(config.Bind(e.Name(), "Color Hex", e.ColorHex));
                 eventTypes.Add(config.Bind(e.Name(), "Event Type", e.Type));
+                eventEnables.Add(config.Bind(e.Name(), "Event Enabled?", e.Enabled, "Setting this to false will stop the event from occuring."));
 
                 // Make scale list
                 List<ScaleType> scaleTypes = new List<ScaleType>();

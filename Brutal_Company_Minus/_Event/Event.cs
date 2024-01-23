@@ -15,6 +15,7 @@ namespace Brutal_Company_Minus._Event
         public string ColorHex = "#FFFFFF";
         public int Weight = 1;
         public type Type = type.Default;
+        public bool Enabled = true;
 
         public Dictionary<ScaleType, Scale> ScaleList = new Dictionary<ScaleType, Scale>();
 

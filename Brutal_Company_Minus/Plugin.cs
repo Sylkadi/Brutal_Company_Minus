@@ -26,7 +26,7 @@ namespace Brutal_Company_Minus
     {
         private const string GUID = "Drinkable.Brutal_Company_Minus";
         private const string NAME = "Brutal_Company_Minus";
-        private const string VERSION = "0.6.4";
+        private const string VERSION = "0.6.5";
         
         public static Plugin Instance;
         private readonly Harmony harmony = new Harmony(GUID);
@@ -113,6 +113,7 @@ namespace Brutal_Company_Minus
             new Events.NoTurrets(),
             new Events.NoLandmines()
         };
+        public static List<Event> disabledEvents = new List<Event>();
 
         public static List<SpawnableItemWithRarity> levelScrap = new List<SpawnableItemWithRarity>();
         public static int MinScrap = 0, MaxScrap = 0;
@@ -177,7 +178,22 @@ namespace Brutal_Company_Minus
                 events[i].ColorHex = Configuration.eventColorHexes[i].Value;
                 events[i].Type = Configuration.eventTypes[i].Value;
                 events[i].ScaleList = Configuration.eventScales[i];
+                events[i].Enabled = Configuration.eventEnables[i].Value;
             }
+
+            // Create disabled events list and update
+            List<Event> newEvents = new List<Event>();
+            foreach(Event e in events)
+            {
+                if (!e.Enabled)
+                {
+                    disabledEvents.Add(e);
+                } else
+                {
+                    newEvents.Add(e);
+                }
+            }
+            events = newEvents;
 
             // Harmony patch all
             harmony.PatchAll();
@@ -231,7 +247,6 @@ namespace Brutal_Company_Minus
             UI.GenerateText(currentEvents);
 
             // Logging
-
             Log.LogInfo("MapMultipliers = [scrapValueMultiplier: " + scrapValueMultiplier + ",     scrapAmountMultiplier: " + scrapAmountMultiplier + ",     factorySizeMultiplier:" + factorySizeMultiplier + "]");
             Log.LogInfo("IsAntiCoildHead = " + Server.Instance.isAntiCoilHead.Value);
         }
