@@ -1,5 +1,11 @@
 # ChangeLog
 <details>
+  <summary>0.6.5</summary>
+
+  - Made weight setting more clear.
+  - Added option to disable an event in the config.
+</details>
+<details>
   <summary>0.6.4</summary>
 
   - Added extra config options for UI.
