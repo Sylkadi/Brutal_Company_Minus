@@ -26,7 +26,7 @@ namespace Brutal_Company_Minus
     {
         private const string GUID = "Drinkable.Brutal_Company_Minus";
         private const string NAME = "Brutal_Company_Minus";
-        private const string VERSION = "0.6.5";
+        private const string VERSION = "0.6.6";
         
         public static Plugin Instance;
         private readonly Harmony harmony = new Harmony(GUID);

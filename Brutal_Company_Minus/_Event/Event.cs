@@ -65,8 +65,8 @@ namespace Brutal_Company_Minus._Event
             int index = Plugin.events.FindIndex(x => x.Name() == name);
             if(index != -1) return Plugin.events[index];
 
-            Log.LogError(string.Format("Event '{0}' dosen't exist, returning random event", name));
-            return Plugin.events[UnityEngine.Random.Range(0, Plugin.events.Count)];
+            Log.LogError(string.Format("Event '{0}' dosen't exist, returning nothing event", name));
+            return new Events.Nothing();
         }
     }
 }
