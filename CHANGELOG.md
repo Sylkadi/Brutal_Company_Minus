@@ -1,5 +1,11 @@
 # ChangeLog
 <details>
+  <summary>0.6.4</summary>
+
+  - Added extra config options for UI.
+  - Fixed some things to deal with certain moon mods. Yet to implement a proper fix.
+</details>
+<details>
 <summary>0.6.3</summary>
 
   - Atlas_Abyss v1.1.3 by Zingar fucks with this mod for whatever reason by removing a bunch of prefabs? i have yet to get to the bottom of this
